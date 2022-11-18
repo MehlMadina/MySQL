@@ -3,11 +3,19 @@
 -- 1) Найти средний amount у каждого покупателя;
   
 
-select 
-   customer_id,
-   avg(amount) as avg_amount
-from orders
-group by customer_id;
+select
+	t1.first_name,
+    t1.last_name,
+    t2.avg_amount
+from customers t1
+inner join (
+ select
+     customer_id,
+     avg(amount) as avg_amount
+ from orders
+ group by customer_id 
+) t2
+on t1.customer_id = t2.customer_id;
 
 
 
@@ -25,11 +33,35 @@ having avg_age >= 25;
 
 -- 3) Найти тех покупателей, у которых средний amount больше или равен 400;
 
+select
+   t1.first_name,
+   t1.last_name,
+   t2.avg_amount
+from customers t1
+inner join (
+	select
+      customer_id,
+      avg(amount) as avg_amount
+    from orders
+    group by customer_id
+) t2
+on t1.customer_id = t2.customer_id
+where avg_amount >= 400;
 
-select 
-   customer_id,
-   avg(amount) as avg_amount
-from orders
-group by customer_id
-having avg_amount >= 400;
+
+
+select
+   t1.first_name,
+   t1.last_name,
+   t2.avg_amount
+from customers t1
+inner join (
+	select
+      customer_id,
+      avg(amount) as avg_amount
+    from orders
+    group by customer_id
+    having avg_amount >= 400
+) t2
+on t1.customer_id = t2.customer_id;
 
